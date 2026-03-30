@@ -2,13 +2,18 @@ describe("GetMaterialsForRareItem", function()
     ---@type Materials
     local Materials
     local GetMaterialsForRareItem
+    ---@type DisenchantBuddy
+    local DisenchantBuddy
 
     before_each(function()
         -- We use `loadfile` over `require` to be able to hand in our own environment
-        ---@type DisenchantBuddy
-        local DisenchantBuddy = {}
-        DisenchantBuddy.IsTBC = true
-        DisenchantBuddy.IsWotLK = true
+        DisenchantBuddy = {}
+        DisenchantBuddy.IsClassic = true
+        DisenchantBuddy.IsTBC = false
+        DisenchantBuddy.IsWotLK = false
+        DisenchantBuddy.IsCata = false
+        DisenchantBuddy.IsMoP = false
+        DisenchantBuddy.IsSoD = false
         loadfile("Materials.lua")("DisenchantBuddy", DisenchantBuddy)
         Materials = DisenchantBuddy.Materials
         loadfile("DisenchantResults/Rare.lua")("DisenchantBuddy", DisenchantBuddy)
@@ -133,13 +138,27 @@ describe("GetMaterialsForRareItem", function()
         local results = GetMaterialsForRareItem(56)
 
         assert.are_same({
-            {itemId = Materials.LARGE_BRILLIANT_SHARD, probability = 99.5, minQuantity = 1, maxQuantity = 1},
-            {itemId = Materials.NEXUS_CRYSTAL, probability = 0.5, minQuantity = 1, maxQuantity = 1},
+            {itemId = Materials.LARGE_BRILLIANT_SHARD, probability = 99.5, minQuantity = 1, maxQuantity = 1}
         }, results)
     end)
 
-    it("should return correct results for level 60 items", function()
-        local results = GetMaterialsForRareItem(60)
+    it("should return correct results for level 74 items", function()
+        local results = GetMaterialsForRareItem(74)
+
+        assert.are_same({
+            {itemId = Materials.LARGE_BRILLIANT_SHARD, probability = 99.5, minQuantity = 1, maxQuantity = 1}
+        }, results)
+    end)
+
+    it("should return correct results for level 75 items on Era", function()
+        DisenchantBuddy.IsClassic = true
+        DisenchantBuddy.IsTBC = false
+        DisenchantBuddy.IsWotLK = false
+        DisenchantBuddy.IsCata = false
+        DisenchantBuddy.IsMoP = false
+        DisenchantBuddy.IsSoD = false
+
+        local results = GetMaterialsForRareItem(75)
 
         assert.are_same({
             {itemId = Materials.LARGE_BRILLIANT_SHARD, probability = 99.5, minQuantity = 1, maxQuantity = 1},
@@ -147,20 +166,50 @@ describe("GetMaterialsForRareItem", function()
         }, results)
     end)
 
-    it("should return correct results for level 61 items", function()
-        local results = GetMaterialsForRareItem(61)
+    it("should return correct results for level 75 items on TBC", function()
+        DisenchantBuddy.IsClassic = false
+        DisenchantBuddy.IsTBC = true
+        DisenchantBuddy.IsWotLK = false
+        DisenchantBuddy.IsCata = false
+        DisenchantBuddy.IsMoP = false
+        DisenchantBuddy.IsSoD = false
+
+        local results = GetMaterialsForRareItem(75)
 
         assert.are_same({
-            {itemId = Materials.LARGE_BRILLIANT_SHARD, probability = 99.5, minQuantity = 1, maxQuantity = 1},
+            {itemId = Materials.SMALL_PRISMATIC_SHARD, probability = 99.5, minQuantity = 1, maxQuantity = 1},
             {itemId = Materials.NEXUS_CRYSTAL, probability = 0.5, minQuantity = 1, maxQuantity = 1},
         }, results)
     end)
 
-    it("should return correct results for level 86 items", function()
+    it("should return correct results for level 86 items on Era", function()
+        DisenchantBuddy.IsClassic = true
+        DisenchantBuddy.IsTBC = false
+        DisenchantBuddy.IsWotLK = false
+        DisenchantBuddy.IsCata = false
+        DisenchantBuddy.IsMoP = false
+        DisenchantBuddy.IsSoD = true
+
         local results = GetMaterialsForRareItem(86)
 
         assert.are_same({
             {itemId = Materials.LARGE_BRILLIANT_SHARD, probability = 99.5, minQuantity = 1, maxQuantity = 1},
+            {itemId = Materials.NEXUS_CRYSTAL, probability = 0.5, minQuantity = 1, maxQuantity = 1},
+        }, results)
+    end)
+
+    it("should return correct results for level 86 items on TBC", function()
+        DisenchantBuddy.IsClassic = false
+        DisenchantBuddy.IsTBC = true
+        DisenchantBuddy.IsWotLK = false
+        DisenchantBuddy.IsCata = false
+        DisenchantBuddy.IsMoP = false
+        DisenchantBuddy.IsSoD = false
+
+        local results = GetMaterialsForRareItem(86)
+
+        assert.are_same({
+            {itemId = Materials.SMALL_PRISMATIC_SHARD, probability = 99.5, minQuantity = 1, maxQuantity = 1},
             {itemId = Materials.NEXUS_CRYSTAL, probability = 0.5, minQuantity = 1, maxQuantity = 1},
         }, results)
     end)
