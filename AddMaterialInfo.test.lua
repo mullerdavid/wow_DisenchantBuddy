@@ -23,13 +23,14 @@ describe("AddMaterialInfo", function()
         end
         gameTooltipMock = _G.GameTooltip
 
-        DisenchantBuddy = {}
-
-        DisenchantBuddy.IsSoD = false
-        DisenchantBuddy.IsTBC = true
-        DisenchantBuddy.IsWotLK = true
-        DisenchantBuddy.IsCata = true
-        DisenchantBuddy.IsMoP = true
+        DisenchantBuddy = {
+            IsClassic = true,
+            IsSoD = false,
+            IsTBC = true,
+            IsWotLK = true,
+            IsCata = true,
+            IsMoP = true,
+        }
 
         -- We use `loadfile` over `require` to be able to hand in our own environment
         loadfile("Materials.lua")("DisenchantBuddy", DisenchantBuddy)
@@ -100,13 +101,14 @@ describe("AddMaterialInfo", function()
     end)
 
     it("should not include MoP materials on a Classic client", function()
-        local classicDisenchantBuddy = {}
-        classicDisenchantBuddy.IsSoD = false
-        classicDisenchantBuddy.IsClassic = true
-        classicDisenchantBuddy.IsTBC = false
-        classicDisenchantBuddy.IsWotLK = false
-        classicDisenchantBuddy.IsCata = false
-        classicDisenchantBuddy.IsMoP = false
+        local classicDisenchantBuddy = {
+            IsClassic = true,
+            IsSoD = false,
+            IsTBC = false,
+            IsWotLK = false,
+            IsCata = false,
+            IsMoP = false,
+        }
         loadfile("Materials.lua")("DisenchantBuddy", classicDisenchantBuddy)
         loadfile("Locales/enUS.lua")("DisenchantBuddy", classicDisenchantBuddy)
         loadfile("DisenchantResults/Uncommon.lua")("DisenchantBuddy", classicDisenchantBuddy)
@@ -124,13 +126,14 @@ describe("AddMaterialInfo", function()
     end)
 
     it("should not include Cata materials on a TBC client", function()
-        local tbcDisenchantBuddy = {}
-        tbcDisenchantBuddy.IsSoD = false
-        tbcDisenchantBuddy.IsClassic = false
-        tbcDisenchantBuddy.IsTBC = true
-        tbcDisenchantBuddy.IsWotLK = false
-        tbcDisenchantBuddy.IsCata = false
-        tbcDisenchantBuddy.IsMoP = false
+        local tbcDisenchantBuddy = {
+            IsClassic = false,
+            IsSoD = false,
+            IsTBC = true,
+            IsWotLK = false,
+            IsCata = false,
+            IsMoP = false,
+        }
         loadfile("Materials.lua")("DisenchantBuddy", tbcDisenchantBuddy)
         loadfile("Locales/enUS.lua")("DisenchantBuddy", tbcDisenchantBuddy)
         loadfile("DisenchantResults/Uncommon.lua")("DisenchantBuddy", tbcDisenchantBuddy)
