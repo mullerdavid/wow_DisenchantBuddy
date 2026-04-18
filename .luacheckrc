@@ -44,4 +44,9 @@ globals = {
     "before_each",
     "it",
     "spy",
+    "DisenchantBuddy_Profile",
+    "SLASH_DisenchantBuddy1",
+    "IsShiftKeyDown",
+    "IsAltKeyDown",
+    "IsControlKeyDown",
 }
