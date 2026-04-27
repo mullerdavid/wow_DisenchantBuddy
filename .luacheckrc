@@ -49,5 +49,5 @@ globals = {
     "IsShiftKeyDown",
     "IsAltKeyDown",
     "IsControlKeyDown",
-	SlashCmdList,
+	"SlashCmdList",
 }
